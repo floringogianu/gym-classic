@@ -1,5 +1,5 @@
+from .catcher_game import Catcher
 from gym.envs.registration import registry, register, make, spec
-# from catcher import Catcher
 
 # Default
 register(

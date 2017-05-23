@@ -1,6 +1,6 @@
 import gym
 from gym import spaces
-from gym_fast_envs.catcher import Catcher
+from gym_fast_envs.catcher_game import Catcher
 
 
 class FastEnvs(gym.Env):
