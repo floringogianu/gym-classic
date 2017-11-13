@@ -38,19 +38,9 @@ class Catcher(BaseGame):
 
         return self.get_screen(), self.is_terminal(), self.get_reward()
 
-    def get_action_set(self):
-        return self.actions
-
-    def get_screen_dims(self):
-        return self.canvas.get_size()
-
     def display(self):
         if self.internal_render:
-            time.sleep(0.01)
             self.render_engine.render()
-
-    def get_screen(self):
-        return self.render_engine.get_screen()
 
     def step(self, action):
         self.ball.move_ball()

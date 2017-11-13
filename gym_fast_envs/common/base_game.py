@@ -22,13 +22,13 @@ class BaseGame(object):
         raise NotImplemented
 
     def get_action_set(self):
-        raise NotImplemented
+        return self.actions
 
     def get_screen_dims(self):
-        raise NotImplemented
+        return self.canvas.get_size()
 
     def get_screen(self):
-        raise NotImplemented
+        return self.render_engine.get_screen()
 
     def step(self, action):
         raise NotImplemented
