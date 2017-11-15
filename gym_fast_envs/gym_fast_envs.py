@@ -1,6 +1,6 @@
 import gym
 from gym import spaces
-from gym_fast_envs.catcher_game import Catcher
+from gym_fast_envs import get_game_module
 
 
 class FastEnvs(gym.Env):
@@ -9,9 +9,9 @@ class FastEnvs(gym.Env):
     def __init__(self, game_name='Catcher', display_screen=False,
                  level=2, width=24, height=24, seed=42):
 
-        self.game = Catcher(level, width, height)
-        print("Initialize Catcher-v0: level=%d, angle=%d, size=%dpx." %
-              (level, self.game.ball.angle, width))
+        game_module = get_game_module(game_name)
+        self.game = game_module(level, width, height)
+        print("Building %s: level=%d, size=%dpx." % (game_name, level, width))
 
         self._action_set = self.game.get_action_set()
         self.action_space = spaces.Discrete(len(self._action_set))
