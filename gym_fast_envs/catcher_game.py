@@ -1,4 +1,3 @@
-import time
 from .common import BaseGame
 from .common import Canvas
 from .catcher import RGBRender
