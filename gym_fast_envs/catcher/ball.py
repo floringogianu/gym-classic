@@ -9,7 +9,7 @@ class Ball(object):
         self.y_bounds = (0, bounds[0])
 
         self.x = int(np.floor(self.x_bounds[1] / 2))
-        self.y = -1                                 # always starts at the top
+        self.y = 0                                  # always starts at the top
 
         self.level = level
         self.angle = int(self.rng.choice([-1, 1]) * np.floor(self.level / 2))
@@ -47,4 +47,4 @@ class Ball(object):
 
     def reset_position(self):
         self.x = self.rng.choice(self.x_bounds[1])
-        self.y = -1                                 # always starts at the top
+        self.y = 0                                  # always starts at the top

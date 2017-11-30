@@ -36,6 +36,7 @@ class Catcher(BaseGame):
     def reset(self):
         self.tray.reset_position()
         self.ball.reset_position()
+        self.render_engine.update()
 
         return self.get_screen(), self.is_terminal(), self.get_reward()
 
