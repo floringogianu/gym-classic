@@ -48,3 +48,24 @@ for base_game in ['Catcher', 'SanityChecker']:
                 tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
                 nondeterministic=False,
             )
+
+# Variable Length episodes of Catcher. Achieved by simply stalling the ball at
+# each time-step with a probability between 0 and 0.6.
+base_game = "Catcher"
+for level in range(4):
+    for size in (24, 32, 48):
+        if size is 24:
+            game = '%s-Level%d-VariableLength-v0' % (base_game, level)
+        else:
+            game = '%s-Level%d-x%d-VariableLength-v0' % (
+                    base_game, level, size)
+
+        register(
+            id=game,
+            entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
+            kwargs={'game_name': base_game, 'display_screen': False,
+                    'level': level, 'width': size, 'height': size,
+                    'variable_length': True},
+            tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+            nondeterministic=False,
+        )

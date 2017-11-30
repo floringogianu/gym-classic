@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Ball(object):
-    def __init__(self, bounds, level, rng):
+    def __init__(self, bounds, level, stall_ball, rng):
         self.rng = rng
 
         self.x_bounds = (0, bounds[1])
@@ -15,8 +15,20 @@ class Ball(object):
         self.angle = int(self.rng.choice([-1, 1]) * np.floor(self.level / 2))
         self.att_prob = self.level/10
 
+        self.stall_ball = stall_ball
+        if self.stall_ball:
+            self.stall_prob = self.rng.uniform(0, 0.6)
+            print("stall prob: ", self.stall_prob)
+
     def move_ball(self):
-        self.y += 1
+        if self.stall_ball:
+            if self.rng.uniform() < self.stall_prob:
+                pass
+            else:
+                self.y += 1
+        else:
+            self.y += 1
+
         if self.rng.uniform() < 1 - self.att_prob:
             self.x += self.angle
         else:
@@ -36,5 +48,3 @@ class Ball(object):
     def reset_position(self):
         self.x = self.rng.choice(self.x_bounds[1])
         self.y = -1                                 # always starts at the top
-
-

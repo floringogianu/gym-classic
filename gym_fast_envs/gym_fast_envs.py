@@ -7,10 +7,14 @@ class FastEnvs(gym.Env):
     metadata = {'render.modes': ['human', 'rgb_array']}
 
     def __init__(self, game_name='Catcher', display_screen=False,
-                 level=2, width=24, height=24, seed=42):
+                 level=2, width=24, height=24, seed=42, variable_length=False):
 
         game_module = get_game_module(game_name)
-        self.game = game_module(level, width, height)
+        if game_name is 'Catcher':
+            self.game = game_module(level, width, height,
+                                    variable_length=variable_length)
+        else:
+            self.game = game_module(level, width, height)
         print("Building %s: level=%d, size=%dpx." % (game_name, level, width))
 
         self._action_set = self.game.get_action_set()

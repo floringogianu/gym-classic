@@ -6,13 +6,14 @@ from .catcher import Tray
 
 
 class Catcher(BaseGame):
-    def __init__(self, level=0, width=24, height=24, seed=42,
-                 internal_render=False):
+    def __init__(self, level=0, width=24, height=24, variable_length=False,
+                 seed=42, internal_render=False):
         BaseGame.__init__(self, seed, internal_render)
 
         self.level = level
         self.width = width
         self.height = height
+        self.variable_length = variable_length
         self.actions = (-1, 0, 1)
 
         self.positive_reward = 1
@@ -22,7 +23,8 @@ class Catcher(BaseGame):
     def _init(self):
         self.canvas = Canvas(self.width, self.height)
         self.tray = Tray(self.canvas.get_bounds())
-        self.ball = Ball(self.canvas.get_bounds(), self.level, self.rng)
+        self.ball = Ball(self.canvas.get_bounds(), self.level,
+                         self.variable_length, self.rng)
 
         if hasattr(self, "render_engine") and self.internal_render:
             self.render_engine.win.destroy()
