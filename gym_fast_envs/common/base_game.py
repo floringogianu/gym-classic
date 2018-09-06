@@ -7,9 +7,9 @@ class BaseGame(object):
         Part interface, part object, can't decide.
     """
 
-    def __init__(self, seed, internal_render):
+    def __init__(self, seed, show_screen):
         self.seed = seed
-        self.internal_render = internal_render
+        self.show_screen = show_screen
         self.rng = RandomState(self.seed)
 
     def set_seed(self, seed):
@@ -25,7 +25,7 @@ class BaseGame(object):
         return self.actions
 
     def get_screen_dims(self):
-        return self.canvas.get_size()
+        return self.canvas.size
 
     def get_screen(self):
         return self.render_engine.get_screen()

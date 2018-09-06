@@ -1,11 +1,13 @@
 from .catcher_game import Catcher
 from .sanity_checker_game import SanityChecker
+from .blind_cliff_walk_game import BlindCliffWalk
 from gym.envs.registration import register
 
 
 ALL_GAMES = {
     "Catcher": Catcher,
-    "SanityChecker": SanityChecker
+    "SanityChecker": SanityChecker,
+    "BlindCliffWalk": BlindCliffWalk
 }
 
 
@@ -17,7 +19,8 @@ def get_game_module(game_name):
 register(
     id='Catcher-v0',
     entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
-    kwargs={'game_name': 'Catcher', 'display_screen': False, 'level': 2},
+    kwargs={'game_id': 'Catcher-v0', 'game_module': 'Catcher',
+            'show_screen': False, 'level': 2},
     tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
     nondeterministic=False,
 )
@@ -25,11 +28,12 @@ register(
 register(
     id='SanityChecker-v0',
     entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
-    kwargs={'game_name': 'SanityChecker', 'display_screen': False,
-            'level': 0},
+    kwargs={'game_id': 'SanityChecker-v0', 'game_module': 'SanityChecker',
+            'show_screen': False, 'level': 0},
     tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
     nondeterministic=False,
 )
+
 
 # Difficulty levels and sizes
 for base_game in ['Catcher', 'SanityChecker']:
@@ -43,8 +47,9 @@ for base_game in ['Catcher', 'SanityChecker']:
             register(
                 id=game,
                 entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
-                kwargs={'game_name': base_game, 'display_screen': False,
-                        'level': level, 'width': size, 'height': size},
+                kwargs={'game_id': game, 'game_module': base_game,
+                        'show_screen': False, 'level': level, 'width': size,
+                        'height': size},
                 tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
                 nondeterministic=False,
             )
@@ -63,9 +68,19 @@ for level in range(4):
         register(
             id=game,
             entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
-            kwargs={'game_name': base_game, 'display_screen': False,
-                    'level': level, 'width': size, 'height': size,
-                    'variable_length': True},
+            kwargs={'game_id': game, 'game_module': base_game,
+                    'show_screen': False, 'level': level, 'width': size,
+                    'height': size, 'variable_length': True},
             tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
             nondeterministic=False,
         )
+
+base_game = "BlindCliffWalk-v0"
+register(
+    id=base_game,
+    entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
+    kwargs={'game_id': base_game, 'game_module': 'BlindCliffWalk',
+            'show_screen': False, 'N': 4},
+    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+    nondeterministic=False,
+)
