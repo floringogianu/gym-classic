@@ -25,20 +25,25 @@ class FastEnvs(gym.Env):
                                             shape=shape, dtype=np.uint8)
         self.viewer = None
 
+
     def step(self, action):
         observation, terminal, reward = self.game.step(action)
         return observation, reward, terminal, {}
 
+
     def _get_image(self):
         return self.game.get_screen()
+
 
     @property
     def _n_actions(self):
         return len(self._action_set)
 
+
     def reset(self):
         observation, _, _ = self.game.reset()
         return observation
+
 
     def _render(self, mode='human', close=False):
         if close:
@@ -54,6 +59,7 @@ class FastEnvs(gym.Env):
             if self.viewer is None:
                 self.viewer = rendering.SimpleImageViewer()
             self.viewer.imshow(img)
+
 
     def _seed(self, seed):
         self.game.set_seed(seed)
