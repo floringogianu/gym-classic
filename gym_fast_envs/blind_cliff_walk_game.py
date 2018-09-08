@@ -15,11 +15,17 @@ class Agent(Entity):
                  color=(231, 56, 133), code=1):
         Entity.__init__(self, bounds, size, initial_xy, color, code=code)
 
+
     def update(self, action):
+        """ Updates the agent's position."""
         if action == -1 or self.position == self.bounds:
             self.position = (0, 0)
         else:
             self.position = (0, self.position[1] + action)
+
+    def reset(self):
+        """ Reset the agent to its initial position."""
+        self.position = (0, 0)
 
 
 class BlindCliffWalk(BaseGame):
@@ -47,19 +53,22 @@ class BlindCliffWalk(BaseGame):
     def __init__(self, N=8, seed=42, show_screen=False, symbolic_state=True):
         BaseGame.__init__(self, seed, show_screen)
 
-        self.N = N
         self.symbolic_state = symbolic_state
 
         self.canvas = canvas = Canvas(width=N, height=1)
         self.agent = agent = Agent(self.canvas.bounds)
+
+        self.render_engine = RGBRender('BlindCliffWalk', self.canvas,
+                                       [self.agent], self.show_screen)
         if self.symbolic_state:
             self.symbolic_render_engine = SymbolicRender(canvas, [agent])
 
-        self.last_action = False
+        self._is_blind = True
+        self._last_action = False
+        self._step_cnt = 0
 
         self.actions = {0: -1, 1: 1}
-        self.positive_reward = 1
-        self.negative_reward = 0
+        self._swapped_actions = {0: 1, 1: -1}
 
         self._init()
 
@@ -71,8 +80,9 @@ class BlindCliffWalk(BaseGame):
                                        [self.agent], self.show_screen)
 
     def reset(self):
-        self.last_action = False
-        self.agent.position = (0, 0)
+        self._last_action = False
+        self._step_cnt = 0
+        self.agent.reset()
         self.render_engine.update()
         if self.symbolic_state:
             self.symbolic_render_engine.update()
@@ -80,13 +90,30 @@ class BlindCliffWalk(BaseGame):
         return self.get_screen(), self.is_terminal(), self.get_reward()
 
 
+    def _swapped(self, action):
+        """ Swappes `good` and `bad` actions every other state """
+        if self._step_cnt % 2 == 0:
+            return self._swapped_actions[action]
+        return self.actions[action]
+
+
     def step(self, action):
-        self.agent.update(self.actions[action])
+        """ Increments the state of the world.
+            Args:
+                action (int): Input in the [0, len(self.actions)] range.
+
+            If `is_blind` it swappes `good` with `bad` actions every other
+            state so that a linear estimator can't generalize over actions.
+        """
+        act = self._swapped(action) if self._is_blind else self.actions[action]
+        self._last_action = True if act == 1 else False
+
+        self.agent.update(act)
         self.render_engine.update()
         if self.symbolic_state:
             self.symbolic_render_engine.update()
 
-        self.last_action = True if action > 0 else False
+        self._step_cnt += 1
 
         return self.get_screen(), self.is_terminal(), self.get_reward()
 
@@ -96,7 +123,7 @@ class BlindCliffWalk(BaseGame):
 
 
     def get_reward(self):
-        return 1 if self.is_terminal() and self.last_action else 0
+        return 1 if self.is_terminal() and self._last_action else 0
 
 
     def get_screen(self):
