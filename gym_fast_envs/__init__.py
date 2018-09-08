@@ -34,12 +34,24 @@ register(
     nondeterministic=False,
 )
 
+register(
+    id="BlindCliffWalk-v0",
+    entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
+    kwargs={'game_id': "BlindCliffWalk-v0", 'game_module': 'BlindCliffWalk',
+            'show_screen': False, 'N': 4},
+    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+    nondeterministic=False,
+)
 
-# Difficulty levels and sizes
+
+# Additional game variants
+# -----------------------------------------------------------------------------
+
+# Difficulty levels and canvas sizes
 for base_game in ['Catcher', 'SanityChecker']:
     for level in range(4):
         for size in (24, 32, 48):
-            if size is 24:
+            if size == 24:
                 game = '%s-Level%d-v0' % (base_game, level)
             else:
                 game = '%s-Level%d-x%d-v0' % (base_game, level, size)
@@ -56,14 +68,13 @@ for base_game in ['Catcher', 'SanityChecker']:
 
 # Variable Length episodes of Catcher. Achieved by simply stalling the ball at
 # each time-step with a probability between 0 and 0.6.
-base_game = "Catcher"
 for level in range(4):
+    base_game = "Catcher"
     for size in (24, 32, 48):
-        if size is 24:
+        if size == 24:
             game = '%s-Level%d-VariableLength-v0' % (base_game, level)
         else:
-            game = '%s-Level%d-x%d-VariableLength-v0' % (
-                    base_game, level, size)
+            game = '%s-Level%d-x%d-VariableLength-v0' % (base_game, level, size)
 
         register(
             id=game,
@@ -75,12 +86,16 @@ for level in range(4):
             nondeterministic=False,
         )
 
-base_game = "BlindCliffWalk-v0"
-register(
-    id=base_game,
-    entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
-    kwargs={'game_id': base_game, 'game_module': 'BlindCliffWalk',
-            'show_screen': False, 'N': 4},
-    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
-    nondeterministic=False,
-)
+# Additional MDP sizes for BlindCliffWalk
+for N in range(5, 25):
+    game_name = "BlindCliffWalk"
+    game = f'{game_name}-N{N}-v0'
+
+    register(
+        id=game,
+        entry_point='gym_fast_envs.gym_fast_envs:FastEnvs',
+        kwargs={'game_id': game, 'game_module': game_name,
+                'show_screen': False, 'N': N},
+        tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+        nondeterministic=False,
+    )
