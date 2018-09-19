@@ -87,7 +87,7 @@ for level in range(4):
         )
 
 # Additional MDP sizes for BlindCliffWalk
-for N in range(5, 25):
+for N in range(2, 25):
     game_name = "BlindCliffWalk"
     game = f'{game_name}-N{N}-v0'
 
