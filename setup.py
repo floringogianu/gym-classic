@@ -3,7 +3,7 @@ import sys
 import os.path
 
 # Don't import gym module here, since deps may not be installed
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'gym_classic'))
+# sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'gym-classic'))
 
 setup(name='gym_classic',
       version=0.2,

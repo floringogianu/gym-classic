@@ -1,10 +1,15 @@
+""" Kind of a Facade over each game implementation. Not sure if it is required
+    nowdays.
+"""
+from PIL import Image
+
 import numpy as np
 import gym
 from gym import spaces
 from gym_classic import get_game_module
 
 
-class FastEnvs(gym.Env):
+class ClassicMDP(gym.Env):
     metadata = {'render.modes': ['human', 'rgb_array']}
 
     def __init__(self, **kwargs):
@@ -32,7 +37,11 @@ class FastEnvs(gym.Env):
 
 
     def _get_image(self):
-        return self.game.get_screen()
+        w, h = self.game.render_engine.width, self.game.render_engine.height
+        img = self.game.render_engine.get_screen()
+        img = Image.fromarray(img, 'RGB')
+        img = img.resize((w, h), resample=Image.NEAREST)
+        return img
 
 
     @property
@@ -45,20 +54,24 @@ class FastEnvs(gym.Env):
         return observation
 
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if close:
             if self.viewer is not None:
                 self.viewer.close()
                 self.viewer = None
             return
+
         img = self._get_image()
+
         if mode == 'rgb_array':
             return img
+
+        # TODO: replace this ImageViewer
         elif mode == 'human':
             from gym.envs.classic_control import rendering
             if self.viewer is None:
                 self.viewer = rendering.SimpleImageViewer()
-            self.viewer.imshow(img)
+            self.viewer.imshow(np.array(img))
 
 
     def _seed(self, seed):

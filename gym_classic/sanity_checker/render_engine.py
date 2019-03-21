@@ -39,6 +39,9 @@ class RGBRender(Renderer):
         self.screen = np.ndarray(shape=(*canvas.size, 3), dtype=np.uint8)
         self.screen.fill(242)
 
+        scale_factor = int(512 / max(canvas.size))
+        self.height, self.width = [scale_factor * sz for sz in canvas.size]
+
         self.bg_code = (242, 242, 242, 0)
         self.fnt_code = (231, 56, 133, 255)
 
