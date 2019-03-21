@@ -1,7 +1,7 @@
 import numpy as np
 import gym
 from gym import spaces
-from gym_fast_envs import get_game_module
+from gym_classic import get_game_module
 
 
 class FastEnvs(gym.Env):

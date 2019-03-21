@@ -1,10 +1,10 @@
 """ Blind Cliff Walk """
 
-from gym_fast_envs.common import BaseGame
-from gym_fast_envs.common import Canvas
-from gym_fast_envs.common import Entity
-from gym_fast_envs.common import RGBRender
-from gym_fast_envs.common import SymbolicRender
+from gym_classic.common import BaseGame
+from gym_classic.common import Canvas
+from gym_classic.common import Entity
+from gym_classic.common import RGBRender
+from gym_classic.common import SymbolicRender
 
 
 class Agent(Entity):

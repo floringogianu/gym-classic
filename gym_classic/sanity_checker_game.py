@@ -6,8 +6,8 @@ from .sanity_checker import RGBRender
 
 class SanityChecker(BaseGame):
     def __init__(self, level=0, width=24, height=24, seed=42,
-                 internal_render=False):
-        BaseGame.__init__(self, seed, internal_render)
+                 show_screen=False):
+        BaseGame.__init__(self, seed, show_screen)
 
         self.actions = (0, 1)
 
@@ -21,19 +21,19 @@ class SanityChecker(BaseGame):
         self.step_cnt = 0
         self.canvas = Canvas(self.width, self.height)
 
-        if hasattr(self, "render_engine") and self.internal_render:
+        if hasattr(self, "render_engine") and self.show_screen:
             self.render_engine.win.destroy()
-        self.render_engine = RGBRender(self.canvas, self.internal_render)
+        self.render_engine = RGBRender(self.canvas, self.show_screen)
 
     def reset(self):
         self.step_cnt = 0
-        if hasattr(self, "render_engine") and self.internal_render:
+        if hasattr(self, "render_engine") and self.show_screen:
             self.render_engine.win.destroy()
-        self.render_engine = RGBRender(self.canvas, self.internal_render)
+        self.render_engine = RGBRender(self.canvas, self.show_screen)
         return self.get_screen(), self.is_terminal(), self.get_reward()
 
     def display(self):
-        if self.internal_render:
+        if self.show_screen:
             self.render_engine.render()
 
     def step(self, action):

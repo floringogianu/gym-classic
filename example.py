@@ -1,14 +1,14 @@
 import time
 import numpy as np
 
-from gym_fast_envs import Catcher
-from gym_fast_envs import SanityChecker
+from gym_classic import Catcher
+from gym_classic import SanityChecker
 
 
 if __name__ == '__main__':
     player_rng = np.random.RandomState(0)
-    game = Catcher(width=24, height=24, variable_length=True, internal_render=True)
-    # game = SanityChecker(width=24, height=24, internal_render=True)
+    game = Catcher(width=24, height=24, variable_length=True, show_screen=True)
+    # game = SanityChecker(width=96, height=96, show_screen=True)
 
     game.set_seed(23)  # test change of seed
 

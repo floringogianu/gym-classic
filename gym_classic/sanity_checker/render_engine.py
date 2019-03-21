@@ -36,7 +36,7 @@ class RGBRender(Renderer):
 
         Renderer.__init__(self)
 
-        self.screen = np.ndarray(shape=(*canvas.get_size(), 3), dtype=np.uint8)
+        self.screen = np.ndarray(shape=(*canvas.size, 3), dtype=np.uint8)
         self.screen.fill(242)
 
         self.bg_code = (242, 242, 242, 0)
@@ -66,7 +66,7 @@ class RGBRender(Renderer):
         """Opens a tk window and displays a PIL.Image"""
 
         screen = Image.fromarray(self.screen, 'RGB')
-        screen = screen.resize((512, 512))
+        screen = screen.resize((512, 512), resample=Image.NEAREST)
         self.win.geometry('%dx%d' % (screen.size[0], screen.size[1]))
 
         tkpi = ImageTk.PhotoImage(screen)
@@ -84,7 +84,7 @@ class AsciiArtRender(Renderer):
     def __init__(self, canvas, ball, tray):
         Renderer.__init__(self, ball, tray)
 
-        self.screen = np.ndarray(shape=canvas.get_size(), dtype=np.uint8)
+        self.screen = np.ndarray(shape=canvas.size, dtype=np.uint8)
 
         self.bg_code = 0
         self.ball_code = 1

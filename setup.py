@@ -3,9 +3,9 @@ import sys
 import os.path
 
 # Don't import gym module here, since deps may not be installed
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'gym_fast_envs'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'gym_classic'))
 
-setup(name='gym_fast_envs',
+setup(name='gym_classic',
       version=0.1,
       description='Fast games for developing RL algorithms.',
       url='https://github.com/floringogianu/gym-fast-envs',
