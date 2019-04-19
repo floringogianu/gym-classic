@@ -21,7 +21,7 @@ register(
     entry_point='gym_classic.gym_classic:ClassicMDP',
     kwargs={'game_id': 'Catcher-v0', 'game_module': 'Catcher',
             'show_screen': False, 'level': 2},
-    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+    max_episode_steps=100,
     nondeterministic=False,
 )
 
@@ -30,7 +30,7 @@ register(
     entry_point='gym_classic.gym_classic:ClassicMDP',
     kwargs={'game_id': 'SanityChecker-v0', 'game_module': 'SanityChecker',
             'show_screen': False, 'level': 0},
-    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+    max_episode_steps=100,
     nondeterministic=False,
 )
 
@@ -39,7 +39,7 @@ register(
     entry_point='gym_classic:ClassicMDP',
     kwargs={'game_id': "BlindCliffWalk-v0", 'game_module': 'BlindCliffWalk',
             'show_screen': False, 'N': 4},
-    tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+    max_episode_steps=100,
     nondeterministic=False,
 )
 
@@ -62,7 +62,7 @@ for base_game in ['Catcher', 'SanityChecker']:
                 kwargs={'game_id': game, 'game_module': base_game,
                         'show_screen': False, 'level': level, 'width': size,
                         'height': size},
-                tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+                max_episode_steps=100,
                 nondeterministic=False,
             )
 
@@ -82,7 +82,7 @@ for level in range(4):
             kwargs={'game_id': game, 'game_module': base_game,
                     'show_screen': False, 'level': level, 'width': size,
                     'height': size, 'variable_length': True},
-            tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+            max_episode_steps=100,
             nondeterministic=False,
         )
 
@@ -96,6 +96,6 @@ for N in range(2, 25):
         entry_point='gym_classic.gym_classic:ClassicMDP',
         kwargs={'game_id': game, 'game_module': game_name,
                 'show_screen': False, 'N': N},
-        tags={'wrapper_config.TimeLimit.max_episode_steps': 10000},
+        max_episode_steps=100,
         nondeterministic=False,
     )
